@@ -6,10 +6,10 @@ var crypto = require('crypto');
 
 var init_host = 'www.2345.com';
 var init_url = 'http://' + init_host + '/';
-var file = __dirname + '/../../data/17.txt';
+var file = __dirname + '/../elastic/bin/elasticsearch';
 var exist = require('fs').existsSync(file);
 var client = new elasticsearch.Client({
-  host: exist ? 's.ziliao.link:19302' : 'localhost:9200'
+  host: !exist ? 's.ziliao.link:19302' : 'localhost:9200'
   //,  log: 'trace'
 });
 var Post = function (_id, host)
