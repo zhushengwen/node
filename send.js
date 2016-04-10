@@ -29,7 +29,7 @@ exports.SaveContent = function (host, content, url, redis, callback)
       var yumin = match[1];
       var regexp = /data-thread-key="([^"]*)"/;
       var match = content.match(regexp);
-
+      var thread_key = null;
       if (match) {
         var thread_key = match[1];
         var duoshuo_url = "http://" + yumin + ".duoshuo.com/api/threads/listPosts.json?require=nonce&thread_key=" +
@@ -49,7 +49,7 @@ exports.SaveContent = function (host, content, url, redis, callback)
         if (data.indexOf('mm.ziliao.link') == - 1 && data.indexOf('fydzv') == - 1) {
           var json = JSON.parse(data);
           var nonce = json.nonce;
-          var thread_key = json.thread.thread_id;
+         // var thread_key = json.thread.thread_id;
           postData(yumin, thread_key, nonce, function ()
           {
             SaveData(host, data, redis, function ()
