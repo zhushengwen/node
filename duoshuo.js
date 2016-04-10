@@ -17,6 +17,7 @@ client.on("connect", function ()
     var list = json.results;
     var i = 0;
     if (list.length) {
+      console.log('Receive:'+list.length);
       (function ()
       {
         if (i < list.length) {
@@ -25,6 +26,7 @@ client.on("connect", function ()
           client.sismember('hosts', host, function (e, b)
           {
             if (! b) {
+              console.log('Add:'+host);
               client.sadd('hosts', host, function (e)
               {
                 if (! e) {
@@ -48,6 +50,7 @@ client.on("connect", function ()
               var key = 'lists:' + host;
               var do_one_host = function ()
               {
+                one.count = 0;
                 one.run(host, client, next_host);
               };
                 client.exists(key, function (e, d)

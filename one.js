@@ -5,35 +5,22 @@ var tool = require('./tool');
 var ftc = require('./ftc');
 var send = require('./send');
 var Promise = require('promise');
-var count = 0;
 exports.run = function (host, redis, callback2)
 {
-  count++;
-  if(count>10)
-  {
+  exports.count ++;
+  if (exports.count > 10) {
     return callback2();
   }
   //弹出一个地址
   var key = 'lists:' + host;
-  new Promise(function (resolve, reject)
-  {
-    redis.rpop(key, function (e, d)
-    {
-      resolve(host + d);
-    });
-  }).then(function (url_org)
+
+  redis.rpop(key, function (e, url_org)
   {
     if (url_org) {
-      do_one_url(url_org, host);
+      do_one_url(host + url_org, host);
     } else {
       callback2();
     }
-
-  }).catch(function (error)
-  {
-    //console.log(error);
-    throw error;
-    callback2();
   });
   function callback(rt)
   {
@@ -46,12 +33,12 @@ exports.run = function (host, redis, callback2)
 
   function do_one_url(url_org, host)
   {
-    console.log('开始：'+count+':' + url_org);
+    console.log('开始：' + exports.count + ':' + url_org);
 
     tool.downloadFromWeb(url_org, function (data)
     {
       process_data(url_org, data, host, redis, callback);
-    }, false, false,callback);
+    }, false, false, callback);
 
   }
 };
