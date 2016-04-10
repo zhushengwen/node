@@ -1,0 +1,20 @@
+#! /bin/bash
+#filename: test.sh
+
+while true;do
+time1=$(date +%s)
+time2=$(date +%s -r nohup.out)
+time3=$[$[$time1-$time2]/60]
+echo $(date "+%F %T"): $time3 min
+if [ $time3 -gt 2 ];then
+echo ">>>>no node,run it"
+kill `pgrep node`
+bash node.sh
+bash node.sh
+bash node.sh
+bash node.sh
+else
+echo ">>>>node is runing..."
+fi
+sleep 5
+done
