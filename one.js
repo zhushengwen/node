@@ -5,9 +5,14 @@ var tool = require('./tool');
 var ftc = require('./ftc');
 var send = require('./send');
 var Promise = require('promise');
-
+var count = 0;
 exports.run = function (host, redis, callback2)
 {
+  count++;
+  if(count>10)
+  {
+    return callback2();
+  }
   //弹出一个地址
   var key = 'lists:' + host;
   new Promise(function (resolve, reject)
@@ -46,7 +51,7 @@ exports.run = function (host, redis, callback2)
     tool.downloadFromWeb(url_org, function (data)
     {
       process_data(url_org, data, host, redis, callback);
-    }, false, false, null);
+    }, false, false,callback);
 
   }
 };
