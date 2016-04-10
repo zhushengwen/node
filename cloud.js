@@ -238,11 +238,15 @@ function SaveContent(post, content, url)
     var title = match[1];
     post.set('key', title);
   }
-  if (content.indexOf('duoshuo.com/embed.js') != - 1) {
+  if (content.indexOf('ds-thread') != - 1) {
     post.set('type', 'duoshuo');
     post.set('extra', yumin);
     var regexp = /\{short_name:"([^"]*)"\};/;
     var match = content.match(regexp);
+    if(!match)
+    {
+      match = content.match(/"short_name":"([^"]*)"/);
+    }
     if (match) {
       var yumin = match[1];
       var regexp = /data-thread-key="([^"]*)"/;
