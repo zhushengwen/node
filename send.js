@@ -90,7 +90,7 @@ function postData(yumin, thread_id, nonce, callback)
   {
     console.log('提交：' + url);
     callback();
-  }, Postdata, false, callback,true);
+  }, Postdata, false, callback,false);
 }
 
 function SaveData(host, data, redis, callback)

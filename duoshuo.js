@@ -17,6 +17,7 @@ client.on("connect", function ()
     var list = json.results;
     var i = 0;
     if (list.length) {
+      list.sort(function() {return 0.5 - Math.random()});
       console.log('Receive:'+list.length);
       (function ()
       {
