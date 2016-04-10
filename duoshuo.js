@@ -50,35 +50,22 @@ client.on("connect", function ()
               {
                 one.run(host, client, next_host);
               };
-              new Promise(function (resolve, reject)
-              {
                 client.exists(key, function (e, d)
                 {
-                  if (e) {
-                    reject(e);
+                  if (!e && d) {
+                    do_one_host();
                   } else {
-                    resolve(d);
-                  }
-                });
-              }).then(function (value)
-              {
-                if (value) {
-                  //todo
-                  do_one_host();
-                } else {
-                  new Promise(function (resolve, reject)
-                  {
                     client.lpush(key, '/', function (e, d)
                     {
-                      if (e) {
-                        reject(e);
+                      if (!e && d) {
+                        do_one_host();
                       } else {
-                        resolve(d);
+                        next_host();
                       }
                     });
-                  }).then(do_one_host).catch(do_one_host);
-                }
-              }).catch(do_one_host);
+                  }
+                });
+              ;
             });
           })();
 

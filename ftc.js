@@ -8,6 +8,7 @@
  fc:设置纤程个数,默认是1
  done:所有任务完成后的回调函数
  */
+var Promise = require('promise');
 var watchtime = 200;
 var dother = 1;
 var max_timeout = 3*60;
