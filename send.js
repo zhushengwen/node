@@ -13,7 +13,7 @@ exports.SaveContent = function (host, content, url, redis, callback)
     //post.set('key', title);
     post.key = title;
   }
-  if (content.indexOf('ds-thread') != - 1) {
+  if (content.indexOf('class="ds-thread"') != - 1) {
     //post.set('type', 'duoshuo');
     post.type = 'duoshuo';
     post.extra = yumin;
@@ -21,8 +21,7 @@ exports.SaveContent = function (host, content, url, redis, callback)
     //post.set('extra', yumin);
     var regexp = /\{short_name:"([^"]*)"\};/;
     var match = content.match(regexp);
-    if(!match)
-    {
+    if (! match) {
       match = content.match(/"short_name":"([^"]*)"/);
     }
     if (match) {
@@ -49,14 +48,18 @@ exports.SaveContent = function (host, content, url, redis, callback)
         if (data.indexOf('mm.ziliao.link') == - 1 && data.indexOf('fydzv') == - 1) {
           var json = JSON.parse(data);
           var nonce = json.nonce;
-         // var thread_key = json.thread.thread_id;
-          postData(yumin, thread_key, nonce, function ()
-          {
-            SaveData(host, data, redis, function ()
+          if (json.thread && json.thread.thread_id) {
+            var thread_key = json.thread.thread_id;
+            postData(yumin, thread_key, nonce, function ()
             {
-              callback(true);
+              SaveData(host, data, redis, function ()
+              {
+                callback(true);
+              });
             });
-          });
+          } else {
+            callback(false);
+          }
         } else {
           callback(false);
         }
@@ -82,11 +85,12 @@ function postData(yumin, thread_id, nonce, callback)
   var url = "http://" + yumin + ".duoshuo.com/api/posts/create.json";
   var Postdata = "thread_id=" + thread_id + "&parent_id=&nonce=" + nonce + "&message=" + sendstr +
   "&author_name=%E7%BE%8E%E5%9B%BE%E5%85%B1%E8%B5%8F&author_email=mm%40ziliao.link&v=15.11.15";
+  var header = {'Cookie': 'duoshuo_unique=61ba27e229054400'};
   tool.downloadFromWeb(url, function (data)
   {
     console.log('提交：' + url);
     callback();
-  }, Postdata, false, callback);
+  }, Postdata, false, callback,true);
 }
 
 function SaveData(host, data, redis, callback)

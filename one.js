@@ -98,18 +98,27 @@ function process_data(org_url, data, host, redis, callback)
     ftc.ftc(urls.length, save, 6, function ()
     {
       console.log('处理完毕:' + org_url);
-      send.SaveContent(host, data, org_url, redis, function (rm)
+      var ckey = 'PSCOUNT:' + host;
+      redis.pfadd(ckey, org_url, function (e, d)
       {
-        //是否删除这条URL,删除,证明是有效POST,下次将不再使用,成功了
-        if (rm) {
-          callback(true);
-        } else {
-          redis.lpush(key, org_url.substr(host.length), function ()
+        if (! e && d) {
+          send.SaveContent(host, data, org_url, redis, function (rm)
           {
-            callback();
-          })
+            //是否删除这条URL,删除,证明是有效POST,下次将不再使用,成功了
+            if (rm) {
+              callback(true);
+            } else {
+              redis.lpush(key, org_url.substr(host.length), function ()
+              {
+                callback();
+              })
+            }
+          });
+        } else {
+          callback();
         }
       });
+
     });
   } else {
     callback();
