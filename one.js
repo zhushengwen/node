@@ -4,6 +4,7 @@
 var tool = require('./tool');
 var ftc = require('./ftc');
 var send = require('./send');
+var Promise = require('promise');
 
 exports.run = function (host, redis, callback2)
 {
