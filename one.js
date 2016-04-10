@@ -46,7 +46,7 @@ exports.run = function (host, redis, callback2)
 
   function do_one_url(url_org, host)
   {
-    console.log('开始：' + url_org);
+    console.log('开始：'+count+':' + url_org);
 
     tool.downloadFromWeb(url_org, function (data)
     {
