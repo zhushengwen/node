@@ -1,1 +1,1 @@
-nohup node ./cloud.js  >> nohup.out &
+nohup node ./duoshuo.js  >> nohup.out &
