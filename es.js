@@ -4,9 +4,9 @@
 var elasticsearch = require('elasticsearch');
 var crypto = require('crypto');
 
-var init_host = 'www.2345.com';
-var init_url = 'http://' + init_host + '/';
-var file = __dirname + '/../elastic/bin/elasticsearch';
+var init_host = 'www.linuxidc.com';
+var init_url = 'https://www.sdk.cn';// 'http://' + init_host + '/';
+var file = __dirname + '/../../data/17.txt';
 var exist = require('fs').existsSync(file);
 var client = new elasticsearch.Client({
   host: !exist ? 's.ziliao.link:19302' : 'localhost:9200'
@@ -20,7 +20,7 @@ var Post = function (_id, host)
     doc[name] = value;
   };
   var _id = _id;
-  var host = host;
+  var host = this.host = host;
   this.save = function (callback)
   {
     if (this.url == init_url) {
@@ -135,6 +135,7 @@ exports.search = function (callback)
       if (hits.length == 1) {
         var post = new Post(hits["0"]._id, hits["0"]._source.host);
         post.url = hits["0"]._source.url;
+		post.host = hits["0"]._source.host;
         var seq = hits["0"]._source.seq;
         if (seq > i) {
           exports.set('search_counter', function ()
@@ -145,7 +146,7 @@ exports.search = function (callback)
           callback(post);
         }
       } else {
-        var post = new Post('initial_url', init_host);
+        var post = new Post('initial_url', init_url);
         post.url = init_url;
         callback(post);
       }
@@ -153,7 +154,7 @@ exports.search = function (callback)
     }, function (err)
     {
       console.trace(err.message);
-      var post = new Post('initial_url', init_host);
+      var post = new Post('initial_url', init_url);
       post.url = init_url;
       callback(post);
     });
