@@ -11,6 +11,41 @@ client.on("error", function (err)
 });
 client.on("connect", function ()
 {
+  Fetch();
+});
+
+function doWork()
+{
+
+    var next_host = arguments.callee;
+    client.RPOPLPUSH('lists', 'lists', function (e, host)
+    {
+      var key = 'lists:' + host;
+      var do_one_host = function ()
+      {
+        one.count = 0;
+        one.run(host, client, next_host);
+      };
+      client.exists(key, function (e, d)
+      {
+        if (!e && d) {
+          do_one_host();
+        } else {
+          client.lpush(key, '/', function (e, d)
+          {
+            if (!e && d) {
+              do_one_host();
+            } else {
+              next_host();
+            }
+          });
+        }
+      });
+    });
+
+}
+function GetNew()
+{
   hosts.get(function (data)
   {
     var json = JSON.parse(data);
@@ -43,49 +78,29 @@ client.on("connect", function ()
 
         } else {
           //RPOPLPUSH
-          (function ()
-          {
-            var next_host = arguments.callee;
-            client.RPOPLPUSH('lists', 'lists', function (e, host)
-            {
-              var key = 'lists:' + host;
-              var do_one_host = function ()
-              {
-                one.count = 0;
-                one.run(host, client, next_host);
-              };
-                client.exists(key, function (e, d)
-                {
-                  if (!e && d) {
-                    do_one_host();
-                  } else {
-                    client.lpush(key, '/', function (e, d)
-                    {
-                      if (!e && d) {
-                        do_one_host();
-                      } else {
-                        next_host();
-                      }
-                    });
-                  }
-                });
-              ;
-            });
-          })();
-
+          doWork();
         }
       })();
     } else {
-
+      doWork();
     }
   });
-});
-
-function doWork()
-{
-
 }
-
+function Fetch()
+{
+  var time = new Date().getTime();
+  client.get('last',function(e,d)
+  {
+    if(time-d>3600000)
+    {
+      client.set('last',time,GetNew);
+    }
+    else
+    {
+      doWork();
+    }
+  })
+}
 function error()
 {
 
