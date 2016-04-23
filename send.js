@@ -80,7 +80,7 @@ exports.SaveContent = function (host, content, url, redis, callback)
 
 function postData(yumin, thread_id, nonce, callback)
 {
-  var sendstr = "美图在这里:" + "http://www.fydzv.com/";
+  var sendstr = "点开有惊喜:" + "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=monline_3_dg&wd=fydzv.com&oq=fydzv%3A&rsv_pq=b50f011b0024d950&rsv_t=2973TgR9yyAFW4NM4VXsWaxaawgEiSED%2Blo1f7u9UFGAGPsNW0aXj8hvohZadHEUY5uk&rsv_enter=1&inputT=6692&rsv_sug3=14&rsv_sug1=9&rsv_sug7=000&rsv_sug2=0&rsv_sug4=7598&rsv_sug=1";
   sendstr = encodeURI(sendstr);
   var url = "http://" + yumin + ".duoshuo.com/api/posts/create.json";
   var Postdata = "thread_id=" + thread_id + "&parent_id=&nonce=" + nonce + "&message=" + sendstr +
