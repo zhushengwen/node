@@ -268,7 +268,7 @@ function SaveContent(post, content, url)
       console.log('找到：' + duoshuo_url);
       tool.downloadFromWeb(duoshuo_url, function (data)
       {
-        if (data.indexOf('mm.ziliao.link') == - 1 && data.indexOf('fydzv.com') == - 1) {
+        if (data.indexOf('hn3jj') == - 1 && data.indexOf('hn3jj') == - 1) {
           var json = JSON.parse(data);
           var nonce = json.nonce;
           var thread_key = json.thread.thread_id;
@@ -284,7 +284,7 @@ function SaveContent(post, content, url)
 
 function postData(yumin, thread_id, nonce)
 {
-  var sendstr = "美图在这里:" + "http://www.fydzv.com";
+  var sendstr = "苹果设备零售店代预约:" + "http://tb.am/hn3jj";
   sendstr = encodeURI(sendstr);
   var url = "http://" + yumin + ".duoshuo.com/api/posts/create.json";
   var Postdata = "thread_id=" + thread_id + "&parent_id=&nonce=" + nonce + "&message=" + sendstr +
