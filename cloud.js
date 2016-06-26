@@ -281,7 +281,7 @@ function SaveContent(post, content, url)
 
 function postData(yumin, thread_id, nonce)
 {
-  var sendstr = "苹果设备零售店代预约:" + "http://tb.am/hn3jj";
+  var sendstr = "苹果设备零售店代预约:" + "https://shop113031027.taobao.com/";
   sendstr = encodeURI(sendstr);
   var url = "http://" + yumin + ".duoshuo.com/api/posts/create.json";
   var Postdata = "thread_id=" + thread_id + "&parent_id=&nonce=" + nonce + "&message=" + sendstr +
