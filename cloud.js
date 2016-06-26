@@ -235,18 +235,16 @@ function SaveContent(post, content, url)
   var regexp = /<title>([^<]*)<\/title>/;
   var match = content.match(regexp);
   if (match) {
+    console.log(match);
     var title = match[1];
     post.set('key', title);
   }
   if (content.indexOf('ds-thread') != - 1) {
     post.set('type', 'duoshuo');
     post.set('extra', yumin);
-    var regexp = /\{short_name:"([^"]*)"\};/;
+    var regexp = /\{\s*"?short_name"?\s*:\s*"([^"]*)"\s*\}\s*;/;
     var match = content.match(regexp);
-    if(!match)
-    {
-      match = content.match(/"short_name":"([^"]*)"/);
-    }
+
     if (match) {
       var yumin = match[1];
       var regexp = /data-thread-key="([^"]*)"/;

@@ -1,22 +1,22 @@
 /**
  * Created by Administrator on 2015/11/7.
  */
-exports.downloadFromWeb = function (url, callback, post, bin, errfun, use_proxy,headers)
+exports.downloadFromWeb = function (url, callback, post, bin, errfun, use_proxy, headers)
 {
   var args = require('url').parse(url);
+  if (! args.protocol) {
+    return errfun();
+  }
   var opt = {
-    host: args.hostname, path: args.path,  headers: {
+    host: args.hostname, path: args.path, headers: {
       'Connection': 'keep-alive'
     }
   };
-  if(args.port)
-  {
+  if (args.port) {
     opt.port = args.port;
   }
-  if(headers)
-  {
-    for(var i in headers)
-    {
+  if (headers) {
+    for (var i in headers) {
       opt['headers'][i] = headers[i];
     }
   }
@@ -33,7 +33,7 @@ exports.downloadFromWeb = function (url, callback, post, bin, errfun, use_proxy,
   }
 
   var zlib = require('zlib');
-  var req = require(args.protocol.slice(0,-1)).request(opt, function (res)
+  var req = require(args.protocol.slice(0, - 1)).request(opt, function (res)
   {
     console.log(url);
 
@@ -54,17 +54,19 @@ exports.downloadFromWeb = function (url, callback, post, bin, errfun, use_proxy,
         if (! bin && ! err) {
           buffer = decoded;
         }
-        if(buffer)
-        buffer = buffer.toString();
-        else buffer = '';
+        if (buffer) {
+          buffer = buffer.toString();
+        } else {
+          buffer = '';
+        }
         callback(buffer);
       };
       if (encoding == 'gzip') {
         zlib.gunzip(buffer, defunc);
       } else if (encoding == 'deflate') {
-        zlib.inflate(buffer,defunc);
+        zlib.inflate(buffer, defunc);
       } else {
-       defunc(true);
+        defunc(true);
       }
 
     });

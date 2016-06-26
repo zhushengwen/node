@@ -51,7 +51,7 @@ function GetNew()
     var json = JSON.parse(data);
     var list = json.results;
     var i = 0;
-    if (list.length) {
+    if (list && list.length) {
       list.sort(function() {return 0.5 - Math.random()});
       console.log('Receive:'+list.length);
       (function ()

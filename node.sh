@@ -1,1 +1,1 @@
-nohup node ./duoshuo.js  >> nohup.out &
+nohup node ./app.js  >> nohup.out &
