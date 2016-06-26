@@ -3,9 +3,9 @@
  */
 var elasticsearch = require('elasticsearch');
 var crypto = require('crypto');
-
+var start = require('./old');
 var init_host = 'www.linuxidc.com';
-var init_url = 'http://bbs.xinjunshi.com/jujiao/20160624/314005.html';// 'http://' + init_host + '/';
+var init_url = start.gostart(); // 'http://bbs.xinjunshi.com/jujiao/20160624/314005.html';// 'http://' + init_host + '/';
 var file = __dirname + '/../../data/17.txt';
 var exist = require('fs').existsSync(file);
 var client = new elasticsearch.Client({

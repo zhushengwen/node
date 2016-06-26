@@ -235,7 +235,6 @@ function SaveContent(post, content, url)
   var regexp = /<title>([^<]*)<\/title>/;
   var match = content.match(regexp);
   if (match) {
-    console.log(match);
     var title = match[1];
     post.set('key', title);
   }
